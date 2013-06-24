@@ -1,8 +1,11 @@
 <html>
 	<head>
 		<title>Call Me Maybe?</title>
-		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootswatch/2.3.2/cyborg/bootstrap.min.css">
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootswatch/2.3.2/cosmo/bootstrap.min.css">
 		<script type="text/javascript" src="https://static.vline.com/vline.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../vline-client.js"></script>
+
 	</head>	
 	<body>
 		<div class="container">
@@ -20,19 +23,34 @@
 					</div>
 				</div>
 			</div>
-			<div class="jumbotron subhead">
-				<div class="row">
-					<div class="span6">
-						<h1>Call Me Maybe?</h1>
-						<p class="lead"> Skype Killer App </p>
-					</div>
+		
+			<div class="row">
+				<div class="span">
+					<button id='login' class="btn btn-success">Login</button>
+					<button class="btn btn-warning">Chat</button>
 				</div>
-				<div class="row">
-					<div class="span6">
-				<!-- 	Video Stuff Goes Here -->
-					</div>
+			</div>
+			
+			<div class="row">
+				<div class="span">
+					<div id="video-wrapper"></div>
 				</div>
 			</div>
 		</div>
+
+		<script type="text/javascript">
+			$('#login').click(function(){
+				$(this).removeClass('btn btn-success').addClass('btn btn-danger');
+				$(this).text('Logout');
+				vlineShell('skypekiller');
+
+
+
+
+			});
+
+
+		</script>
+
 	</body>
 </html>
