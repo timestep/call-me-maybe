@@ -45,7 +45,24 @@ function MyCall(app, mediaSession) {
     // on('exitState:outgoing', app.hideMessage, app).
     on('enterState:connecting', onEnterConnecting).
     // on('exitState:connecting', app.hideMessage, app).
-    on('enterState:active', onEnterActive);
+    on('enterState:active', onEnterActive).
+    on('mediaSession:addLocalStream mediaSession:addRemoteStream', function(event) {
+      var stream = event.stream;
+
+      // guard against adding a local video stream twice if it is attached to two media sessions
+      if ($('#' + stream.getId()).length) {
+        return;
+      }
+
+      // create video or audio element
+      var elem = $(event.stream.createMediaElement());
+      elem.prop('id', stream.getId());
+
+      $('#video-wrapper').append(elem);
+    }).
+    on('mediaSession:removeLocalStream mediaSession:removeRemoteStream', function(event) {
+      $('#' + event.stream.getId()).remove();
+    });
     // on('exitState:active', app.hideCallUi, app);
 
 
@@ -75,30 +92,7 @@ function MyCall(app, mediaSession) {
   function onEnterActive() {
     addMediaSession_(mediaSession);
   }
-  function addMediaSession_(mediaSession) {
-    // add event handler for add stream events
-    mediaSession.on('mediaSession:addLocalStream mediaSession:addRemoteStream', function(event) {
-      var stream = event.stream;
 
-      // guard against adding a local video stream twice if it is attached to two media sessions
-      if ($('#' + stream.getId()).length) {
-        return;
-      }
-
-      // create video or audio element
-      var elem = $(event.stream.createMediaElement());
-      elem.prop('id', stream.getId());
-
-      $('#video-wrapper').append(elem);
-    });
-    // add event handler for remove stream events
-    mediaSession.on('mediaSession:removeLocalStream mediaSession:removeRemoteStream', function(event) {
-      $('#' + event.stream.getId()).remove();
-    });
-
-    // The Call object tracks the lifecycle of the mediaSession
-    this.calls_.push(new Call(this.term_, mediaSession));
-  }
 };
 
 // end the call  
