@@ -31,6 +31,8 @@
 					<button class="btn btn-warning">Call</button>
 				</div>
 			</div>
+
+
 			
 			<div class="row">
 				<div class="span">
@@ -43,7 +45,7 @@
 			$('#login').click(function(){
 				$(this).removeClass('btn btn-success').addClass('btn btn-danger');
 				$(this).text('Logout');
-				vlineShell('skypekiller');
+				vline = new vlineShell('skypekiller');
 			});
 
 
