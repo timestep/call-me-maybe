@@ -1,24 +1,23 @@
 function vlineShell(serviceId) {
 
-	var $client, $session;
-	var self = this;
-
-	$client = vline.Client.create({serviceId: serviceId});
+	this.client_ = vline.Client.create({'serviceId': serviceId});
 	
-	// if we have a saved session, use it
-	if ($client.isLoggedIn()) {
-		$session = $client.getDefaultSession();
-	};
-	
-	function logoutCmd() {
-		$session = null;
-		return $client.logout();
-	};
+	this.client_.login(serviceId, window.PROFILE, window.AUTH_TOKEN)
+			.done(this.init_, this);
+
+	// function vlineShell.prototype.init_ = function(session) {
+	// this.session_ = session;
+  //  	};		
+
+  this.client_.on('add:mediaSession', onMediaSession, this);
+
+  function onMediaSession(event) {
+    var mediaSession = event.target;
+    if (mediaSession.isIncoming()) {
+      this.calls_.push(new MyCall(this, mediaSession));
+    }
+  }
+
 
 	
-	var userId = $session.getLocalPersonId();
-	$session.startMedia(userId);
-
-	
-
 };

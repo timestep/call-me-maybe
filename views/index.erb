@@ -4,7 +4,8 @@
 		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootswatch/2.3.2/cosmo/bootstrap.min.css">
 		<script type="text/javascript" src="https://static.vline.com/vline.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-		<script type="text/javascript" src="../vline-client.js"></script>
+		<script type="text/javascript" src="vline-client.js"></script>
+
 
 	</head>	
 	<body>
@@ -16,7 +17,7 @@
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								<li>
-									<a href="./chat">Chat</a>
+									<a href="./chat">Call</a>
 								</li>
 							</ul>
 						</div>
@@ -27,7 +28,7 @@
 			<div class="row">
 				<div class="span">
 					<button id='login' class="btn btn-success">Login</button>
-					<button class="btn btn-warning">Chat</button>
+					<button class="btn btn-warning">Call</button>
 				</div>
 			</div>
 			
@@ -43,11 +44,6 @@
 				$(this).removeClass('btn btn-success').addClass('btn btn-danger');
 				$(this).text('Logout');
 				vlineShell('skypekiller');
-
-				
-
-
-
 
 			});
 
