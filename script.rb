@@ -9,3 +9,6 @@ end
 get '/chat' do
 	erb :index
 end
+
+get '/vline-client.js' do
+	
