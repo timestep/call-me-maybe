@@ -1,13 +1,15 @@
 
 function vlineShell(serviceId) {
+
+  this.calls_ = [];
+
 	this.client_ = vline.Client.create({'serviceId': serviceId});
-	
 	this.client_.login(serviceId, window.PROFILE, window.AUTH_TOKEN)
 		.done(function(session) {
       this.session_ = session;
       console.log(this.session_.mb);
 
-      this.client_.on('add:mediaSession', onMediaSession, this)
+      this.client_.on('add:mediaSession', this.onMediaSession, this)
       this.client_.on('recv:im', this.onMessage_, this);
 
       
@@ -29,27 +31,38 @@ vlineShell.prototype.call = function(userId) {
   // constructor of two-party call controller
 };
 
+
 function MyCall(app, mediaSession) {
+
+  this.media1 = mediaSession;
 
   mediaSession.
     on('enterState:pending', onEnterPending).
-    on('exitState:pending', app.hideModal, app).
+    on('exitState:pending', onExitPending).
     on('enterState:incoming', onEnterIncoming).
-    on('exitState:incoming', app.hideNotification, app).
+    // on('exitState:incoming', app.hideNotification, app).
     on('enterState:outgoing', onEnterOutgoing).
-    on('exitState:outgoing', app.hideMessage, app).
+    // on('exitState:outgoing', app.hideMessage, app).
     on('enterState:connecting', onEnterConnecting).
-    on('exitState:connecting', app.hideMessage, app).
-    on('enterState:active', onEnterActive).
-    on('exitState:active', app.hideCallUi, app);
+    // on('exitState:connecting', app.hideMessage, app).
+    on('enterState:active', onEnterActive);
+    // on('exitState:active', app.hideCallUi, app);
+
+
 
   function onEnterPending() {
     console.log("Click 'allow' to start call ^^^");
   }
+
+  function onExitPending() {
+    console.log("Exit Pending State");
+  }
+
   function onEnterIncoming() {
     console.log(
       'Incoming call from ' + mediaSession.getDisplayName() + '...',
       mediaSession.getThumbnailUrl());
+
   }
   function onEnterOutgoing() {
     console.log(
