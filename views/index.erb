@@ -28,12 +28,13 @@
 			<div class="row">
 				<div class="span">
 					<button id='login' class="btn btn-success">Login</button>
-					<button class="btn btn-warning">Call</button>
+				</div>
+				<div class="span">
+					<button id='call' class="btn btn-warning">Call</button>
+					<input id ='useridbox' type="text" placeholder="serviceId:userId">
 				</div>
 			</div>
-
-
-			
+		
 			<div class="row">
 				<div class="span">
 					<div id="video-wrapper"></div>
@@ -42,13 +43,21 @@
 		</div>
 
 		<script type="text/javascript">
+		$(document).ready(function(){
 			$('#login').click(function(){
+				vlineState = new vlineShell('skypekiller');
 				$(this).removeClass('btn btn-success').addClass('btn btn-danger');
 				$(this).text('Logout');
-				vline = new vlineShell('skypekiller');
 			});
-
-
+			
+			$('#call').click(function(){
+				// if ($('#login').attr('class') == 'btn btn-danger'){
+					console.log('yolo');
+					userID = $('#useridbox').val();
+					vlineState.call(userID);
+				// };
+			});
+		});
 		</script>
 
 	</body>
