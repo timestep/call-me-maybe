@@ -10,7 +10,7 @@ function vlineShell(serviceId) {
       console.log(this.session_.mb);
 
       this.client_.on('add:mediaSession', this.onMediaSession, this)
-      this.client_.on('recv:im', this.onMessage_, this);
+      // this.client_.on('recv:im', this.onMessage_, this);
 
       
     }, this);
@@ -62,7 +62,7 @@ function MyCall(app, mediaSession) {
     console.log(
       'Incoming call from ' + mediaSession.getDisplayName() + '...',
       mediaSession.getThumbnailUrl());
-
+    mediaSession.start();
   }
   function onEnterOutgoing() {
     console.log(
@@ -73,7 +73,31 @@ function MyCall(app, mediaSession) {
     console.log('Connecting...');
   }
   function onEnterActive() {
-    app.showCallUi(mediaSession);
+    addMediaSession_(mediaSession);
+  }
+  function addMediaSession_(mediaSession) {
+    // add event handler for add stream events
+    mediaSession.on('mediaSession:addLocalStream mediaSession:addRemoteStream', function(event) {
+      var stream = event.stream;
+
+      // guard against adding a local video stream twice if it is attached to two media sessions
+      if ($('#' + stream.getId()).length) {
+        return;
+      }
+
+      // create video or audio element
+      var elem = $(event.stream.createMediaElement());
+      elem.prop('id', stream.getId());
+
+      $('#video-wrapper').append(elem);
+    });
+    // add event handler for remove stream events
+    mediaSession.on('mediaSession:removeLocalStream mediaSession:removeRemoteStream', function(event) {
+      $('#' + event.stream.getId()).remove();
+    });
+
+    // The Call object tracks the lifecycle of the mediaSession
+    this.calls_.push(new Call(this.term_, mediaSession));
   }
 };
 
@@ -97,3 +121,4 @@ vlineShell.prototype.sendMessage_= function(userId){
     person.postMessage("Yo");
   })
 };
+
