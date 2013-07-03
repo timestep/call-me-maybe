@@ -58,7 +58,8 @@
 				// if ($('#login').attr('class') == 'btn btn-danger'){
 					console.log('yolo');
 					userID = $('#useridbox').val();
-					vlineState.call(userID);
+					// vlineState.start(userID);
+					vlineState.session_.startMedia(userID);
 				// };
 			});
 		});
